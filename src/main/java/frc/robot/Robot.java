@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package frc.robot; // Assumes CANSparkMaxs and REv Through Bore Encoder
 
 import edu.wpi.first.wpilibj.TimedRobot;
 
@@ -19,8 +19,7 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   @Override
-  public void robotInit() {
-}
+  public void robotInit() {}
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -30,9 +29,7 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {
-
-  }
+  public void robotPeriodic() {}
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -40,6 +37,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {}
+
+  @Override
+  public void disabledExit() {}
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -50,6 +50,9 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
+  public void autonomousExit() {}
+
+  @Override
   public void teleopInit() {}
 
   /** This function is called periodically during operator control. */
@@ -57,11 +60,17 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {}
 
   @Override
+  public void teleopExit() {}
+
+  @Override
   public void testInit() {}
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
+  @Override
+  public void testExit() {}
 
   /** This function is called once when the robot is first started up. */
   @Override
