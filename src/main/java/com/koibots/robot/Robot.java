@@ -1,106 +1,84 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+package com.koibots.robot;
 
-package com.koibots.robot; // Assumes CANSparkMaxs and REv Through Bore Encoder
+import edu.wpi.first.wpilibj.TimedRobot;
 
-import com.koibots.lib.wpilib.IterativeRobotBase;
+public class Robot extends TimedRobot {
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
- */
-public class Robot extends IterativeRobotBase {
-  public static double kDefaultPeriod = 0.005;
-  
-  @Override
-  protected void loopFunc() {
-      super.loopFunc();
-  }
+    @Override
+    public void robotInit() {
+        // TODO Auto-generated method stub
+        super.robotInit();
+    }
 
-  public Robot() {
-    super(0.005);
-  }
-  
-  @Override
-  public void startCompetition() {
+    @Override
+    public void robotPeriodic() {
+        // TODO Auto-generated method stub
+        super.robotPeriodic();
+    }
 
-  }
+    @Override
+    public void autonomousInit() {
+        // TODO Auto-generated method stub
+        super.autonomousInit();
+    }
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {
+    @Override
+    public void autonomousPeriodic() {
+        // TODO Auto-generated method stub
+        super.autonomousPeriodic();
+    }
 
-  }
+    @Override
+    public void autonomousExit() {
+        // TODO Auto-generated method stub
+        super.autonomousExit();
+    }
 
-  /**
-   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {}
+    @Override
+    public void teleopInit() {
+        // TODO Auto-generated method stub
+        super.teleopInit();
+    }
 
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {}
+    @Override
+    public void teleopPeriodic() {
+        // TODO Auto-generated method stub
+        super.teleopPeriodic();
+    }
 
-  @Override
-  public void disabledPeriodic() {}
+    @Override
+    public void teleopExit() {
+        // TODO Auto-generated method stub
+        super.teleopExit();
+    }
 
-  @Override
-  public void disabledExit() {}
+    @Override
+    public void testInit() {
+        // TODO Auto-generated method stub
+        super.testInit();
+    }
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  @Override
-  public void autonomousInit() {}
+    @Override
+    public void testPeriodic() {
+        // TODO Auto-generated method stub
+        super.testPeriodic();
+    }
 
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {}
+    @Override
+    public void testExit() {
+        // TODO Auto-generated method stub
+        super.testExit();
+    }
 
-  @Override
-  public void autonomousExit() {}
+    @Override
+    public void simulationInit() {
+        // TODO Auto-generated method stub
+        super.simulationInit();
+    }
 
-  @Override
-  public void teleopInit() {}
-
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {
-
-  }
-
-  @Override
-  public void teleopExit() {}
-
-  @Override
-  public void testInit() {}
-
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {}
-
-  @Override
-  public void testExit() {}
-
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {}
-
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {}
-
-  @Override
-  public void endCompetition() {
-      
-  }
+    @Override
+    public void simulationPeriodic() {
+        // TODO Auto-generated method stub
+        super.simulationPeriodic();
+    }
 }
