@@ -1,6 +1,6 @@
 package com.koibots.robot.subsystems;
 
-import com.koibots.robot.Constants.DriveSettings;
+
 import com.koibots.robot.utilities.NAVX;
 import com.koibots.robot.utilities.SwerveModule;
 import com.revrobotics.CANSparkMax;
@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static com.koibots.robot.Constants.DriveSettings.*;
 
 public class Drive extends SubsystemBase{
     private static Drive m_Drive = new Drive();
@@ -35,56 +36,56 @@ public class Drive extends SubsystemBase{
     SwerveDriveKinematics m_driveKinematics;
 
     Drive() {
-        m_frontLeftDriveMotor = new CANSparkMax(DriveSettings.FRONT_LEFT_DRIVE_PORT, MotorType.kBrushless);
-        m_frontLeftRotationMotor = new CANSparkMax(DriveSettings.FRONT_LEFT_ROTATION_PORT, MotorType.kBrushless);
-        m_frontRightDriveMotor = new CANSparkMax(DriveSettings.FRONT_RIGHT_DRIVE_PORT, MotorType.kBrushless);
-        m_frontRightRotationMotor = new CANSparkMax(DriveSettings.FRONT_RIGHT_ROTATION_PORT, MotorType.kBrushless);
-        m_backLefttDriveMotor = new CANSparkMax(DriveSettings.BACK_LEFT_DRIVE_PORT, MotorType.kBrushless);
-        m_backLeftRotationMotor = new CANSparkMax(DriveSettings.BACK_LEFT_ROTATION_PORT, MotorType.kBrushless);
-        m_backRightDriveMotor = new CANSparkMax(DriveSettings.BACK_RIGHT_DRIVE_PORT, MotorType.kBrushless);
-        m_backRightRotationMotor = new CANSparkMax(DriveSettings.BACK_RIGHT_ROTATION_PORT, MotorType.kBrushless);
+        m_frontLeftDriveMotor = new CANSparkMax(FRONT_LEFT_DRIVE_PORT, MotorType.kBrushless);
+        m_frontLeftRotationMotor = new CANSparkMax(FRONT_LEFT_ROTATION_PORT, MotorType.kBrushless);
+        m_frontRightDriveMotor = new CANSparkMax(FRONT_RIGHT_DRIVE_PORT, MotorType.kBrushless);
+        m_frontRightRotationMotor = new CANSparkMax(FRONT_RIGHT_ROTATION_PORT, MotorType.kBrushless);
+        m_backLefttDriveMotor = new CANSparkMax(BACK_LEFT_DRIVE_PORT, MotorType.kBrushless);
+        m_backLeftRotationMotor = new CANSparkMax(BACK_LEFT_ROTATION_PORT, MotorType.kBrushless);
+        m_backRightDriveMotor = new CANSparkMax(BACK_RIGHT_DRIVE_PORT, MotorType.kBrushless);
+        m_backRightRotationMotor = new CANSparkMax(BACK_RIGHT_ROTATION_PORT, MotorType.kBrushless);
 
         m_frontLeftModule = new SwerveModule(
             m_frontLeftDriveMotor,
             m_frontLeftRotationMotor,
-            DriveSettings.DRIVE_RAMP_RATE,
-            DriveSettings.ROTATION_PID,
-            DriveSettings.KS_DRIVE,
-            DriveSettings.KV_DRIVE,
-            DriveSettings.KA_DRIVE);
+            DRIVE_RAMP_RATE,
+            ROTATION_PID,
+            KS_DRIVE,
+            KV_DRIVE,
+            KA_DRIVE);
 
         m_frontRightModule = new SwerveModule(
             m_frontRightDriveMotor,
             m_frontRightRotationMotor,
-            DriveSettings.DRIVE_RAMP_RATE,
-            DriveSettings.ROTATION_PID,
-            DriveSettings.KS_DRIVE,
-            DriveSettings.KV_DRIVE,
-            DriveSettings.KA_DRIVE);
+            DRIVE_RAMP_RATE,
+            ROTATION_PID,
+            KS_DRIVE,
+            KV_DRIVE,
+            KA_DRIVE);
 
         m_backLeftModule = new SwerveModule(
             m_backLefttDriveMotor,
             m_backLefttDriveMotor,
-            DriveSettings.DRIVE_RAMP_RATE,
-            DriveSettings.ROTATION_PID,
-            DriveSettings.KS_DRIVE,
-            DriveSettings.KV_DRIVE,
-            DriveSettings.KA_DRIVE);
+            DRIVE_RAMP_RATE,
+            ROTATION_PID,
+            KS_DRIVE,
+            KV_DRIVE,
+            KA_DRIVE);
 
         m_backRightModule = new SwerveModule(
             m_backRightDriveMotor,
             m_backRightRotationMotor,
-            DriveSettings.DRIVE_RAMP_RATE,
-            DriveSettings.ROTATION_PID,
-            DriveSettings.KS_DRIVE,
-            DriveSettings.KV_DRIVE,
-            DriveSettings.KA_DRIVE);
+            DRIVE_RAMP_RATE,
+            ROTATION_PID,
+            KS_DRIVE,
+            KV_DRIVE,
+            KA_DRIVE);
 
         m_driveKinematics = new SwerveDriveKinematics(
-            DriveSettings.FRONT_LEFT_POSITION,
-            DriveSettings.FRONT_RIGHT_POSITION,
-            DriveSettings.BACK_LEFT_POSITION,
-            DriveSettings.BACK_RIGHT_POSITION
+            FRONT_LEFT_POSITION,
+            FRONT_RIGHT_POSITION,
+            BACK_LEFT_POSITION,
+            BACK_RIGHT_POSITION
         );
 
         m_driveOdometry = new SwerveDrivePoseEstimator(m_driveKinematics,
