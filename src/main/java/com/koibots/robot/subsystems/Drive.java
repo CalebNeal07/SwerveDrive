@@ -1,6 +1,5 @@
 package com.koibots.robot.subsystems;
 
-
 import com.koibots.robot.utilities.NAVX;
 import com.koibots.robot.utilities.SwerveModule;
 import com.revrobotics.CANSparkMax;
@@ -8,12 +7,13 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static com.koibots.robot.Constants.DriveSettings.*;
 
-public class Drive extends SubsystemBase{
+public class Drive extends SubsystemBase {
     private static Drive m_Drive = new Drive();
     CANSparkMax m_frontRightDriveMotor;
     CANSparkMax m_frontRightRotationMotor;
@@ -36,6 +36,7 @@ public class Drive extends SubsystemBase{
     SwerveDriveKinematics m_driveKinematics;
 
     Drive() {
+
         m_frontLeftDriveMotor = new CANSparkMax(FRONT_LEFT_DRIVE_PORT, MotorType.kBrushless);
         m_frontLeftRotationMotor = new CANSparkMax(FRONT_LEFT_ROTATION_PORT, MotorType.kBrushless);
         m_frontRightDriveMotor = new CANSparkMax(FRONT_RIGHT_DRIVE_PORT, MotorType.kBrushless);
@@ -88,18 +89,30 @@ public class Drive extends SubsystemBase{
             BACK_RIGHT_POSITION
         );
 
-        m_driveOdometry = new SwerveDrivePoseEstimator(m_driveKinematics,
-        NAVX.get().getRotation2d(),
-        new SwerveModulePosition[] {
-            m_frontLeftModule.getModulePosition(), 
-            m_frontRightModule.getModulePosition(),
-            m_backLeftModule.getModulePosition(),
-            m_backRightModule.getModulePosition()},
-        new Pose2d());
+        m_driveOdometry = new SwerveDrivePoseEstimator(
+            m_driveKinematics,
+            NAVX.get().getRotation2d(),
+            new SwerveModulePosition[] {
+                m_frontLeftModule.getModulePosition(), 
+                m_frontRightModule.getModulePosition(),
+                m_backLeftModule.getModulePosition(),
+                m_backRightModule.getModulePosition()},
+            new Pose2d());
+
     }
 
     public static Drive get() {
         return m_Drive;
+    }
+
+    public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity, ) {
+        m_driveKinematics.toSwerveModuleStates(
+            new ChassisSpeeds(
+                BACK_RIGHT_DRIVE_PORT, 
+                BACK_LEFT_ROTATION_PORT, 
+                BACK_LEFT_DRIVE_PORT), 
+            BACK_LEFT_POSITION);
+
     }
 
     @Override

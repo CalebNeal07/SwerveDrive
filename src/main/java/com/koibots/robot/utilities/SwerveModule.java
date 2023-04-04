@@ -3,6 +3,8 @@ package com.koibots.robot.utilities;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.SparkMaxAlternateEncoder.Type;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -20,6 +22,7 @@ public class SwerveModule {
     private RelativeEncoder m_driveEncoder;
     private SlewRateLimiter m_rateLimiter;
     private PIDController m_pidController;
+    private SparkMaxPIDController m_velocityPID;
 
     /**
      * Object for controlling a swerve module
@@ -27,14 +30,12 @@ public class SwerveModule {
      * @param driveMotor 
      * @param rotationMotor the motor that controls 
      * @param accelerationRate How fast the drive motor should accelerate
-     * @param kp for PID for rotating to an angle
-     * @param ki 
-     * @param kd
+     * @param pidConstants
      * @param ks 
      * @param kv
      * @param ka
      */
-    public SwerveModule(
+    public SwerveModule (
         CANSparkMax driveMotor,
         CANSparkMax rotationMotor,
         double accelerationRate,
@@ -49,6 +50,7 @@ public class SwerveModule {
         this.m_pidController = new PIDController(pidConstants.kP, pidConstants.kI, pidConstants.kD);
         this.m_feedforward = new SimpleMotorFeedforward(ks, kv, ka);
         this.m_rotationEncoder = m_rotationMotor.getAlternateEncoder(Type.kQuadrature, 1);
+        this.m_velocityPID = rotationMotor.getPIDController();
         this.m_driveEncoder = m_driveMotor.getAlternateEncoder(8192);
         this.m_rotationEncoder.setPositionConversionFactor(360 / 8192);
     }
@@ -76,5 +78,9 @@ public class SwerveModule {
 
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getRotation()));
+    }
+
+    public void setDriveVelocity(double speed) {
+        m_velocityPID.setReference(speed, ControlType.kSmartVelocity);
     }
 }
