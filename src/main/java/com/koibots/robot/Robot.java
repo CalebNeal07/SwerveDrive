@@ -1,12 +1,36 @@
 package com.koibots.robot;
 
+import com.koibots.robot.utilities.SparkMaxSettings;
+import static com.koibots.robot.Constants.DriveSettings.*;
+
+import com.koibots.robot.subsystems.drive.DriveSubsystem;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 public class Robot extends TimedRobot {
+    private static DriveSubsystem m_drive;
 
     @Override
     public void robotInit() {
         System.gc();
+
+        new SparkMaxSettings(
+            "RotationSettings", 
+            FRONT_LEFT_ROTATION_PORT,
+            FRONT_RIGHT_ROTATION_PORT,
+            BACK_LEFT_ROTATION_PORT,
+            BACK_RIGHT_ROTATION_PORT)
+            .loadSettings(true);
+
+        new SparkMaxSettings(
+            "DriveSettings", 
+            FRONT_LEFT_DRIVE_PORT,
+            FRONT_RIGHT_DRIVE_PORT,
+            BACK_LEFT_DRIVE_PORT,
+            BACK_RIGHT_DRIVE_PORT)
+            .loadSettings();
+
+        m_drive = new DriveSubsystem();
     }
 
     @Override
@@ -41,10 +65,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        // TODO Auto-generated method stub
-        super.teleopPeriodic(
-
-        );
+        m_drive.setStates(kDefaultPeriod, kDefaultPeriod, kDefaultPeriod);
     }
 
     @Override
@@ -81,5 +102,9 @@ public class Robot extends TimedRobot {
     public void simulationPeriodic() {
         // TODO Auto-generated method stub
         super.simulationPeriodic();
+    }
+
+    public static DriveSubsystem getDrive() {
+        return m_drive;
     }
 }

@@ -1,4 +1,4 @@
-package com.koibots.robot.subsystems;
+package com.koibots.robot.subsystems.drive;
 
 import com.koibots.robot.utilities.NAVX;
 import com.koibots.robot.utilities.SwerveModule;
@@ -7,14 +7,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static com.koibots.robot.Constants.DriveSettings.*;
 
-public class Drive extends SubsystemBase {
-    private static Drive m_Drive = new Drive();
+public class DriveSubsystem extends SubsystemBase {
     CANSparkMax m_frontRightDriveMotor;
     CANSparkMax m_frontRightRotationMotor;
     CANSparkMax m_frontLeftDriveMotor;
@@ -35,8 +35,7 @@ public class Drive extends SubsystemBase {
     SwerveDrivePoseEstimator m_driveOdometry;
     SwerveDriveKinematics m_driveKinematics;
 
-    Drive() {
-
+    public DriveSubsystem() {
         m_frontLeftDriveMotor = new CANSparkMax(FRONT_LEFT_DRIVE_PORT, MotorType.kBrushless);
         m_frontLeftRotationMotor = new CANSparkMax(FRONT_LEFT_ROTATION_PORT, MotorType.kBrushless);
         m_frontRightDriveMotor = new CANSparkMax(FRONT_RIGHT_DRIVE_PORT, MotorType.kBrushless);
@@ -81,7 +80,7 @@ public class Drive extends SubsystemBase {
             KS_DRIVE,
             KV_DRIVE,
             KA_DRIVE);
-
+    
         m_driveKinematics = new SwerveDriveKinematics(
             FRONT_LEFT_POSITION,
             FRONT_RIGHT_POSITION,
@@ -98,25 +97,29 @@ public class Drive extends SubsystemBase {
                 m_backLeftModule.getModulePosition(),
                 m_backRightModule.getModulePosition()},
             new Pose2d());
-
     }
 
-    public static Drive get() {
-        return m_Drive;
-    }
-
-    public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity, ) {
+    public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity, Translation2d rotationOffset) {
         m_driveKinematics.toSwerveModuleStates(
             new ChassisSpeeds(
-                BACK_RIGHT_DRIVE_PORT, 
-                BACK_LEFT_ROTATION_PORT, 
-                BACK_LEFT_DRIVE_PORT), 
-            BACK_LEFT_POSITION);
+                xMetersPerSecond,
+                yMetersPerSecond,
+                angularVelocity),
+            rotationOffset);
+    }
 
+    public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity) {
+        m_driveKinematics.toSwerveModuleStates(
+            new ChassisSpeeds(
+                xMetersPerSecond,
+                yMetersPerSecond,
+                angularVelocity));
     }
 
     @Override
     public void periodic() {}
+
+    public void simulationInit() {}
 
     @Override
     public void simulationPeriodic() {}

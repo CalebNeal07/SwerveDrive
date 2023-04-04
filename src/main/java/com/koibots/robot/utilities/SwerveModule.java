@@ -30,10 +30,10 @@ public class SwerveModule {
      * @param driveMotor 
      * @param rotationMotor the motor that controls 
      * @param accelerationRate How fast the drive motor should accelerate
-     * @param pidConstants
-     * @param ks 
-     * @param kv
-     * @param ka
+     * @param pidConstants PID constants for turning to an angle
+     * @param ksimple feed forward constants
+     * @param kv Simple feed forward constants
+     * @param ka Simple feed forward constants
      */
     public SwerveModule (
         CANSparkMax driveMotor,
@@ -42,7 +42,7 @@ public class SwerveModule {
         PIDConstants pidConstants,
         double ks,
         double kv,
-        double ka 
+        double ka
     ) {
         this.m_driveMotor = driveMotor;
         this.m_rotationMotor = rotationMotor;
@@ -57,11 +57,6 @@ public class SwerveModule {
 
     public SwerveModuleState getState() {
         return new SwerveModuleState(getDrivePosition(), null);
-    }
-
-    public void setState(SwerveModuleState setState) {
-        m_driveMotor.setVoltage(m_feedforward.calculate(m_rateLimiter.calculate(setState.speedMetersPerSecond)));
-        m_rotationMotor.setVoltage(m_pidController.calculate(m_rotationEncoder.getPosition(), setState.angle.getDegrees()));
     }
 
     public double getDrivePosition() {
@@ -82,5 +77,10 @@ public class SwerveModule {
 
     public void setDriveVelocity(double speed) {
         m_velocityPID.setReference(speed, ControlType.kSmartVelocity);
+    }
+
+    public void setState(SwerveModuleState setState) {
+        m_driveMotor.setVoltage(m_feedforward.calculate(m_rateLimiter.calculate(setState.speedMetersPerSecond)));
+        m_rotationMotor.setVoltage(m_pidController.calculate(m_rotationEncoder.getPosition(), setState.angle.getDegrees()));
     }
 }

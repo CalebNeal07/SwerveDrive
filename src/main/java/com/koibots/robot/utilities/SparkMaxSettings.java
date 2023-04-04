@@ -17,14 +17,14 @@ import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 
-public class SparkMaxSettings {
+public class SparkMaxSettings{
     private Map<String, String[]> settings = new HashMap<String, String[]>();
     private CANSparkMax m_sparkMax;
     private Gson gson = new Gson();
     private ArrayList<CANSparkMax> sparkMaxs;
 
     @SuppressWarnings("unchecked")
-    public SparkMaxSettings(String file, int[] ids) {
+    public SparkMaxSettings(String file, int... ids) {
         for (int id : ids) {
             this.sparkMaxs.add(new CANSparkMax(id, MotorType.kBrushless));
         }
@@ -33,7 +33,7 @@ public class SparkMaxSettings {
                 Paths.get(
                     Filesystem.getDeployDirectory().getName(), 
                     "SparxMaxSettings",
-                    file)),
+                    file + ".json")),
                 settings.getClass());
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), false);
