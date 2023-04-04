@@ -6,8 +6,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        // TODO Auto-generated method stub
-        super.robotInit();
+        System.gc();
     }
 
     @Override
@@ -43,7 +42,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         // TODO Auto-generated method stub
-        super.teleopPeriodic();
+        super.teleopPeriodic(
+
+        );
     }
 
     @Override

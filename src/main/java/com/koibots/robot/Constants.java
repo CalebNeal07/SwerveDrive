@@ -4,6 +4,8 @@
 
 package com.koibots.robot;
 
+import com.pathplanner.lib.auto.PIDConstants;
+
 import edu.wpi.first.math.geometry.Translation2d;
 
 /**
@@ -15,10 +17,12 @@ import edu.wpi.first.math.geometry.Translation2d;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    
+  public static class RobotParameters {
+    public static final double DEFAULT_PERIOD = 0.01; // 10ms
   }
+
   public static class DriveSettings {
+  // TODO: Find Constants
     public static final int FRONT_RIGHT_DRIVE_PORT = 0;
     public static final int FRONT_RIGHT_ROTATION_PORT = 1;
     public static final int FRONT_LEFT_DRIVE_PORT = 2;
@@ -28,11 +32,13 @@ public final class Constants {
     public static final int BACK_LEFT_DRIVE_PORT = 6;
     public static final int BACK_LEFT_ROTATION_PORT = 7;
 
-    public static final double KP_ROTATION = 0;
-    public static final double KI_ROTATION = 0;
-    public static final double KD_ROTATION = 0;
+    public static final PIDConstants ROTATION_PID = new PIDConstants(Double.NaN, Double.NaN, Double.NaN);
 
-    public static final double DRIVE_RAMP_RATE = 0;
+    public static final double KS_DRIVE = Double.NaN;
+    public static final double KV_DRIVE = Double.NaN;
+    public static final double KA_DRIVE = Double.NaN;
+
+    public static final double DRIVE_RAMP_RATE = Double.NaN;
 
     public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0, 0);
     public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0, 0);

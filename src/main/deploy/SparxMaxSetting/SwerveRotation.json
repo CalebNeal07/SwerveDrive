@@ -1,12 +1,11 @@
 {
-    "settings" : 
-    {
-        "id" : "0",
-        "Idle Mode" : "Brake",
-        "kP" : "1",
-        "kI" : "0",
-        "kD" : "0",
-        "kFF" : "0",
-        "kIZone" : "0"
-    }
+    
+    "id" : "0",
+    "Idle Mode" : "Brake",
+    "kP" : "1",
+    "kI" : "0",
+    "kD" : "0",
+    "kFF" : "0",
+    "kIZone" : "0"
+
 }
