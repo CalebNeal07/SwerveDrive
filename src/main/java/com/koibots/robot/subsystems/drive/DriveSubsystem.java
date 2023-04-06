@@ -1,7 +1,6 @@
 package com.koibots.robot.subsystems.drive;
 
 import com.koibots.robot.utilities.NAVX;
-import com.koibots.robot.utilities.SwerveModule;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -11,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static com.koibots.robot.Constants.DriveSettings.*;
 
@@ -100,21 +100,33 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity, Translation2d rotationOffset) {
-        m_driveKinematics.toSwerveModuleStates(
+        SwerveModuleState[] newStates = m_driveKinematics.toSwerveModuleStates(
             new ChassisSpeeds(
                 xMetersPerSecond,
                 yMetersPerSecond,
                 angularVelocity),
             rotationOffset);
+
+        m_frontLeftModule.setState(newStates[0]);
+        m_frontRightModule.setState(newStates[1]);
+        m_backLeftModule.setState(newStates[2]);
+        m_backRightModule.setState(newStates[3]);
     }
 
     public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity) {
-        m_driveKinematics.toSwerveModuleStates(
+        SwerveModuleState[] newStates = m_driveKinematics.toSwerveModuleStates(
             new ChassisSpeeds(
                 xMetersPerSecond,
                 yMetersPerSecond,
                 angularVelocity));
+
+        m_frontLeftModule.setState(newStates[0]);
+        m_frontRightModule.setState(newStates[1]);
+        m_backLeftModule.setState(newStates[2]);
+        m_backRightModule.setState(newStates[3]);
     }
+
+    
 
     @Override
     public void periodic() {}

@@ -1,4 +1,4 @@
-package com.koibots.robot.utilities;
+package com.koibots.robot.subsystems.drive;
 
 import com.pathplanner.lib.auto.PIDConstants;
 import com.revrobotics.CANSparkMax;
@@ -14,7 +14,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class SwerveModule {
-
     private SimpleMotorFeedforward m_feedforward;
     private CANSparkMax m_driveMotor;
     private CANSparkMax m_rotationMotor;
@@ -31,11 +30,11 @@ public class SwerveModule {
      * @param rotationMotor the motor that controls 
      * @param accelerationRate How fast the drive motor should accelerate
      * @param pidConstants PID constants for turning to an angle
-     * @param ksimple feed forward constants
+     * @param ks feed forward constants
      * @param kv Simple feed forward constants
      * @param ka Simple feed forward constants
      */
-    public SwerveModule (
+    protected SwerveModule (
         CANSparkMax driveMotor,
         CANSparkMax rotationMotor,
         double accelerationRate,
@@ -55,32 +54,50 @@ public class SwerveModule {
         this.m_rotationEncoder.setPositionConversionFactor(360 / 8192);
     }
 
-    public SwerveModuleState getState() {
-        return new SwerveModuleState(getDrivePosition(), null);
-    }
-
+    /**
+     * Returns the position of the drive motor's encoder.
+     */
     public double getDrivePosition() {
-        return m_driveEncoder.getPosition();
+        return this.m_driveEncoder.getPosition();
     }
 
+    /**
+     * Returns the rotation of a swerve module.
+     */
     public double getRotation() {
-        return m_rotationEncoder.getPosition();
+        return this.m_rotationEncoder.getPosition();
     }
 
+    /**
+     * Returns the speed and rotation of a swerve module.
+     */
     public SwerveModuleState getModuleState() {
-        return new SwerveModuleState(m_driveEncoder.getVelocity(), new Rotation2d(getRotation()));
+        return new SwerveModuleState(this.m_driveEncoder.getVelocity(), new Rotation2d(getRotation()));
     }
 
+    /**
+     * Returns the drive position and rotation of a swerve module.
+     */
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getRotation()));
     }
 
+    /**
+     * Sets the velocity of the drive motor through PID.
+     * 
+     * @param speed the speed (in mps) to set the drive motor to.
+     */
     public void setDriveVelocity(double speed) {
-        m_velocityPID.setReference(speed, ControlType.kSmartVelocity);
+        this.m_velocityPID.setReference(speed, ControlType.kSmartVelocity);
     }
 
-    public void setState(SwerveModuleState setState) {
-        m_driveMotor.setVoltage(m_feedforward.calculate(m_rateLimiter.calculate(setState.speedMetersPerSecond)));
-        m_rotationMotor.setVoltage(m_pidController.calculate(m_rotationEncoder.getPosition(), setState.angle.getDegrees()));
+    /**
+     * Sets a swerve modules rotation and velocity.
+     * 
+     * @param setState the state to set the module to.
+     */
+    protected void setState(SwerveModuleState setState) {
+        this.m_driveMotor.setVoltage(m_feedforward.calculate(m_rateLimiter.calculate(setState.speedMetersPerSecond)));
+        this.m_rotationMotor.setVoltage(m_pidController.calculate(m_rotationEncoder.getPosition(), setState.angle.getDegrees()));
     }
 }
