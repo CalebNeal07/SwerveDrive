@@ -14,7 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static com.koibots.robot.Constants.DriveSettings.*;
 
-public class DriveSubsystem extends SubsystemBase {
+public class Drivetrain extends SubsystemBase {
     CANSparkMax m_frontRightDriveMotor;
     CANSparkMax m_frontRightRotationMotor;
     CANSparkMax m_frontLeftDriveMotor;
@@ -35,7 +35,7 @@ public class DriveSubsystem extends SubsystemBase {
     SwerveDrivePoseEstimator m_driveOdometry;
     SwerveDriveKinematics m_driveKinematics;
 
-    public DriveSubsystem() {
+    public Drivetrain() {
         m_frontLeftDriveMotor = new CANSparkMax(FRONT_LEFT_DRIVE_PORT, MotorType.kBrushless);
         m_frontLeftRotationMotor = new CANSparkMax(FRONT_LEFT_ROTATION_PORT, MotorType.kBrushless);
         m_frontRightDriveMotor = new CANSparkMax(FRONT_RIGHT_DRIVE_PORT, MotorType.kBrushless);
@@ -107,10 +107,21 @@ public class DriveSubsystem extends SubsystemBase {
                 angularVelocity),
             rotationOffset);
 
+        SwerveDriveKinematics.desaturateWheelSpeeds( // TODO: Fix these values.
+            newStates, 
+            new ChassisSpeeds(
+                0, 
+                0, 
+                0),
+            0, 
+            0, 
+            0);
+
         m_frontLeftModule.setState(newStates[0]);
         m_frontRightModule.setState(newStates[1]);
         m_backLeftModule.setState(newStates[2]);
         m_backRightModule.setState(newStates[3]);
+        
     }
 
     public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity) {
@@ -126,10 +137,16 @@ public class DriveSubsystem extends SubsystemBase {
         m_backRightModule.setState(newStates[3]);
     }
 
-    
-
     @Override
-    public void periodic() {}
+    public void periodic() {
+        m_driveOdometry.update(
+            NAVX.get().getRotation2d(), 
+            new SwerveModulePosition[] {
+                m_frontLeftModule.getModulePosition(), 
+                m_frontRightModule.getModulePosition(),
+                m_backLeftModule.getModulePosition(),
+                m_backRightModule.getModulePosition()});
+    }
 
     public void simulationInit() {}
 

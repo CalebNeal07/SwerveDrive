@@ -5,17 +5,25 @@ import com.koibots.robot.utilities.SparkMaxSettings;
 
 import static com.koibots.robot.Constants.DriveSettings.*;
 
-import com.koibots.robot.subsystems.drive.DriveSubsystem;
+import com.koibots.robot.subsystems.drive.Drivetrain;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import static com.koibots.robot.Constants.RobotParameters.*;
 
 public class Robot extends TimedRobot {
-    private static DriveSubsystem m_drive;
+    private static Drivetrain m_drive;
     private PS4Controller m_controller;
-    private PIDController m_angleToAngularVelocityPID;    
+    private PIDController m_angleToAngularVelocityPID;
+    private PowerDistribution m_PDH = new PowerDistribution(PDH_PORT, ModuleType.kRev);
+
+    protected Robot(double period) {
+        super(period);
+    }
 
     @Override
     public void robotInit() {
@@ -40,7 +48,7 @@ public class Robot extends TimedRobot {
 
         m_controller = new PS4Controller(0);
 
-        m_drive = new DriveSubsystem();
+        m_drive = new Drivetrain();
     }
 
     @Override
@@ -128,8 +136,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void simulationInit() {
-        // TODO Auto-generated method stub
-        super.simulationInit();
+        m_drive.simulationInit();
     }
 
     @Override
@@ -138,7 +145,7 @@ public class Robot extends TimedRobot {
         super.simulationPeriodic();
     }
 
-    public static DriveSubsystem getDrive() {
+    public static Drivetrain getDrive() {
         return m_drive;
     }
 }

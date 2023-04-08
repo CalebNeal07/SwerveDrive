@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
   public static class RobotParameters {
     public static final double DEFAULT_PERIOD = 0.01; // 10ms
+    public static final int PDH_PORT = 1;
   }
 
   public static class DriveSettings {
