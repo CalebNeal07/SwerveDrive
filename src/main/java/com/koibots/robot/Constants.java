@@ -7,6 +7,7 @@ package com.koibots.robot;
 import com.pathplanner.lib.auto.PIDConstants;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import static edu.wpi.first.math.util.Units.*;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -38,6 +39,9 @@ public final class Constants {
     public static final double KS_DRIVE = Double.NaN;
     public static final double KV_DRIVE = Double.NaN;
     public static final double KA_DRIVE = Double.NaN;
+
+    public static final double MAX_DRIVE_SPEED = 12;
+    public static final double WHEEL_DIAMETER_METERS = inchesToMeters(4);
 
     public static final double DRIVE_RAMP_RATE = Double.NaN;
 

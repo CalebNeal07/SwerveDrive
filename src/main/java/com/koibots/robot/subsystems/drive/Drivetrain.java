@@ -23,7 +23,7 @@ public class Drivetrain extends SubsystemBase {
     CANSparkMax m_backRightRotationMotor;
     CANSparkMax m_backLefttDriveMotor;
     CANSparkMax m_backLeftRotationMotor;
-    SwerveModule m_frontLeftModule;
+    SwerveModule m_frontLeftModule; 
     SwerveModule m_frontRightModule;
     SwerveModule m_backLeftModule;
     SwerveModule m_backRightModule;
@@ -107,21 +107,14 @@ public class Drivetrain extends SubsystemBase {
                 angularVelocity),
             rotationOffset);
 
-        SwerveDriveKinematics.desaturateWheelSpeeds( // TODO: Fix these values.
+        SwerveDriveKinematics.desaturateWheelSpeeds(
             newStates, 
-            new ChassisSpeeds(
-                0, 
-                0, 
-                0),
-            0, 
-            0, 
-            0);
+            MAX_DRIVE_SPEED);
 
         m_frontLeftModule.setState(newStates[0]);
         m_frontRightModule.setState(newStates[1]);
         m_backLeftModule.setState(newStates[2]);
         m_backRightModule.setState(newStates[3]);
-        
     }
 
     public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity) {
@@ -130,6 +123,10 @@ public class Drivetrain extends SubsystemBase {
                 xMetersPerSecond,
                 yMetersPerSecond,
                 angularVelocity));
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(
+            newStates, 
+            MAX_DRIVE_SPEED);
 
         m_frontLeftModule.setState(newStates[0]);
         m_frontRightModule.setState(newStates[1]);

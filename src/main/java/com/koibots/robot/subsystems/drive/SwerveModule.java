@@ -12,6 +12,8 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import static java.lang.Math.*;
+import static com.koibots.robot.Constants.DriveSettings.*;
 
 public class SwerveModule {
     private SimpleMotorFeedforward m_feedforward;
@@ -52,6 +54,7 @@ public class SwerveModule {
         this.m_velocityPID = rotationMotor.getPIDController();
         this.m_driveEncoder = m_driveMotor.getAlternateEncoder(8192);
         this.m_rotationEncoder.setPositionConversionFactor(360 / 8192);
+        this.m_driveEncoder.setPositionConversionFactor(PI * WHEEL_DIAMETER_METERS);
     }
 
     /**
