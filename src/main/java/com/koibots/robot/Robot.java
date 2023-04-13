@@ -14,12 +14,14 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import static com.koibots.robot.Constants.RobotParameters.*;
+import static com.koibots.robot.Constants.ControllerConstants.*;
+import static java.lang.Math.*;
 
 public class Robot extends TimedRobot {
     private static Drivetrain m_drive;
     private PS4Controller m_controller;
     private PIDController m_angleToAngularVelocityPID;
-    private PowerDistribution m_PDH = new PowerDistribution(PDH_PORT, ModuleType.kRev);
+    private PowerDistribution m_PDH;
 
     protected Robot(double period) {
         super(period);
@@ -49,12 +51,12 @@ public class Robot extends TimedRobot {
         m_controller = new PS4Controller(0);
 
         m_drive = new Drivetrain();
+
+        m_PDH = new PowerDistribution(PDH_PORT, ModuleType.kRev);
     }
 
     @Override
     public void robotPeriodic() {
-        // TODO Auto-generated method stub
-        super.robotPeriodic();
     }
 
     @Override
@@ -102,11 +104,18 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         m_drive.setStates(
-            m_controller.getLeftY(), 
-            m_controller.getLeftX(), 
+            abs(m_controller.getLeftY()) > LEFT_JOYSTICK_DEADZONE ? m_controller.getLeftY() * MAX_TRANSLATION_SPEED_MPS : 0, 
+            abs(m_controller.getLeftX()) > RIGHT_JOYSTICK_DEADZONE ? m_controller.getLeftX() * MAX_TRANSLATION_SPEED_MPS : 0, 
             m_angleToAngularVelocityPID.calculate(
-                NAVX.get().getYaw(), 
-                new Rotation2d(m_controller.getRightY(), m_controller.getRightX()).getDegrees()));
+                NAVX.get().getYaw(),
+                m_controller.getPOV() == -1 ? 
+                    pow(m_controller.getRightY(), 2) + pow(m_controller.getRightX(), 2) > ROTATION_DEADZONE ? 
+                        new Rotation2d(
+                            m_controller.getRightY(),
+                            m_controller.getRightX()
+                        ).getDegrees()
+                        : NAVX.get().getYaw()
+                    : m_controller.getPOV()));
     }
 
     @Override

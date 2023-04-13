@@ -3,6 +3,7 @@ package com.koibots.robot.subsystems.drive;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.SparkMaxAlternateEncoder.Type;
@@ -55,6 +56,7 @@ public class SwerveModule {
         this.m_driveEncoder = m_driveMotor.getAlternateEncoder(8192);
         this.m_rotationEncoder.setPositionConversionFactor(360 / 8192);
         this.m_driveEncoder.setPositionConversionFactor(PI * WHEEL_DIAMETER_METERS);
+        this.m_rotationMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
     }
 
     /**

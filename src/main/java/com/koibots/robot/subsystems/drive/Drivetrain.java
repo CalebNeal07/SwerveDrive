@@ -109,7 +109,7 @@ public class Drivetrain extends SubsystemBase {
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
             newStates, 
-            MAX_DRIVE_SPEED);
+            MAX_DRIVE_SPEED_MPS);
 
         m_frontLeftModule.setState(newStates[0]);
         m_frontRightModule.setState(newStates[1]);
@@ -126,7 +126,7 @@ public class Drivetrain extends SubsystemBase {
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
             newStates, 
-            MAX_DRIVE_SPEED);
+            MAX_DRIVE_SPEED_MPS);
 
         m_frontLeftModule.setState(newStates[0]);
         m_frontRightModule.setState(newStates[1]);

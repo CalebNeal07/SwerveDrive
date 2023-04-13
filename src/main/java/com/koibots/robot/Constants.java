@@ -23,6 +23,13 @@ public final class Constants {
     public static final int PDH_PORT = 1;
   }
 
+  public static class ControllerConstants {
+    public static final double LEFT_JOYSTICK_DEADZONE = 0.1;
+    public static final double RIGHT_JOYSTICK_DEADZONE = 0.1;
+    public static final double MAX_TRANSLATION_SPEED_MPS = 5;
+    public static final double ROTATION_DEADZONE = 0.1;
+  }
+
   public static class DriveSettings {
   // TODO: Find Constants
     public static final int FRONT_RIGHT_DRIVE_PORT = 0;
@@ -40,7 +47,7 @@ public final class Constants {
     public static final double KV_DRIVE = Double.NaN;
     public static final double KA_DRIVE = Double.NaN;
 
-    public static final double MAX_DRIVE_SPEED = 12;
+    public static final double MAX_DRIVE_SPEED_MPS = 12;
     public static final double WHEEL_DIAMETER_METERS = inchesToMeters(4);
 
     public static final double DRIVE_RAMP_RATE = Double.NaN;
