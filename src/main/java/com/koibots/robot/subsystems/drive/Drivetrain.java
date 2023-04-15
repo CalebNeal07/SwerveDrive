@@ -15,92 +15,79 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static com.koibots.robot.Constants.DriveSettings.*;
 
 public class Drivetrain extends SubsystemBase {
-    CANSparkMax m_frontRightDriveMotor;
-    CANSparkMax m_frontRightRotationMotor;
-    CANSparkMax m_frontLeftDriveMotor;
-    CANSparkMax m_frontLeftRotationMotor;
-    CANSparkMax m_backRightDriveMotor;
-    CANSparkMax m_backRightRotationMotor;
-    CANSparkMax m_backLefttDriveMotor;
-    CANSparkMax m_backLeftRotationMotor;
-    SwerveModule m_frontLeftModule; 
-    SwerveModule m_frontRightModule;
-    SwerveModule m_backLeftModule;
-    SwerveModule m_backRightModule;
-    SwerveModule[] m_SwerveModules = {
-        m_frontLeftModule,
-        m_frontRightModule,
-        m_backLeftModule,
-        m_backRightModule};
-    SwerveDrivePoseEstimator m_driveOdometry;
-    SwerveDriveKinematics m_driveKinematics;
+    private final SwerveModule frontLeftModule;
+    private final SwerveModule frontRightModule;
+    private final SwerveModule backLeftModule;
+    private final SwerveModule backRightModule;
+    private final SwerveDrivePoseEstimator odometry;
+    private final SwerveDriveKinematics kinematics;
 
     public Drivetrain() {
-        m_frontLeftDriveMotor = new CANSparkMax(FRONT_LEFT_DRIVE_PORT, MotorType.kBrushless);
-        m_frontLeftRotationMotor = new CANSparkMax(FRONT_LEFT_ROTATION_PORT, MotorType.kBrushless);
-        m_frontRightDriveMotor = new CANSparkMax(FRONT_RIGHT_DRIVE_PORT, MotorType.kBrushless);
-        m_frontRightRotationMotor = new CANSparkMax(FRONT_RIGHT_ROTATION_PORT, MotorType.kBrushless);
-        m_backLefttDriveMotor = new CANSparkMax(BACK_LEFT_DRIVE_PORT, MotorType.kBrushless);
-        m_backLeftRotationMotor = new CANSparkMax(BACK_LEFT_ROTATION_PORT, MotorType.kBrushless);
-        m_backRightDriveMotor = new CANSparkMax(BACK_RIGHT_DRIVE_PORT, MotorType.kBrushless);
-        m_backRightRotationMotor = new CANSparkMax(BACK_RIGHT_ROTATION_PORT, MotorType.kBrushless);
+        CANSparkMax m_frontLeftDriveMotor = new CANSparkMax(FRONT_LEFT_DRIVE_PORT, MotorType.kBrushless);
+        CANSparkMax m_frontLeftRotationMotor = new CANSparkMax(FRONT_LEFT_ROTATION_PORT, MotorType.kBrushless);
+        CANSparkMax frontRightDriveMotor = new CANSparkMax(FRONT_RIGHT_DRIVE_PORT, MotorType.kBrushless);
+        CANSparkMax m_frontRightRotationMotor = new CANSparkMax(FRONT_RIGHT_ROTATION_PORT, MotorType.kBrushless);
+        CANSparkMax m_backLeftDriveMotor = new CANSparkMax(BACK_LEFT_DRIVE_PORT, MotorType.kBrushless);
+        CANSparkMax m_backLeftRotationMotor = new CANSparkMax(BACK_LEFT_ROTATION_PORT, MotorType.kBrushless);
+        CANSparkMax m_backRightDriveMotor = new CANSparkMax(BACK_RIGHT_DRIVE_PORT, MotorType.kBrushless);
+        CANSparkMax m_backRightRotationMotor = new CANSparkMax(BACK_RIGHT_ROTATION_PORT, MotorType.kBrushless);
 
-        m_frontLeftModule = new SwerveModule(
-            m_frontLeftDriveMotor,
-            m_frontLeftRotationMotor,
-            DRIVE_RAMP_RATE,
-            ROTATION_PID,
-            KS_DRIVE,
-            KV_DRIVE,
-            KA_DRIVE);
+        frontLeftModule = new SwerveModule(
+                m_frontLeftDriveMotor,
+                m_frontLeftRotationMotor,
+                ROTATION_PID,
+                DRIVE_RAMP_RATE,
+                KS_DRIVE,
+                KV_DRIVE,
+                KA_DRIVE);
 
-        m_frontRightModule = new SwerveModule(
-            m_frontRightDriveMotor,
-            m_frontRightRotationMotor,
-            DRIVE_RAMP_RATE,
-            ROTATION_PID,
-            KS_DRIVE,
-            KV_DRIVE,
-            KA_DRIVE);
+        frontRightModule = new SwerveModule(
+                frontRightDriveMotor,
+                m_frontRightRotationMotor,
+                ROTATION_PID,
+                DRIVE_RAMP_RATE,
+                KS_DRIVE,
+                KV_DRIVE,
+                KA_DRIVE);
 
-        m_backLeftModule = new SwerveModule(
-            m_backLefttDriveMotor,
-            m_backLefttDriveMotor,
-            DRIVE_RAMP_RATE,
-            ROTATION_PID,
-            KS_DRIVE,
-            KV_DRIVE,
-            KA_DRIVE);
+        backLeftModule = new SwerveModule(
+                m_backLeftDriveMotor,
+                m_backLeftRotationMotor,
+                ROTATION_PID,
+                DRIVE_RAMP_RATE,
+                KS_DRIVE,
+                KV_DRIVE,
+                KA_DRIVE);
 
-        m_backRightModule = new SwerveModule(
-            m_backRightDriveMotor,
-            m_backRightRotationMotor,
-            DRIVE_RAMP_RATE,
-            ROTATION_PID,
-            KS_DRIVE,
-            KV_DRIVE,
-            KA_DRIVE);
+        backRightModule = new SwerveModule(
+                m_backRightDriveMotor,
+                m_backRightRotationMotor,
+                ROTATION_PID,
+                DRIVE_RAMP_RATE,
+                KS_DRIVE,
+                KV_DRIVE,
+                KA_DRIVE);
     
-        m_driveKinematics = new SwerveDriveKinematics(
+        kinematics = new SwerveDriveKinematics(
             FRONT_LEFT_POSITION,
             FRONT_RIGHT_POSITION,
             BACK_LEFT_POSITION,
             BACK_RIGHT_POSITION
         );
 
-        m_driveOdometry = new SwerveDrivePoseEstimator(
-            m_driveKinematics,
+        odometry = new SwerveDrivePoseEstimator(
+                kinematics,
             NAVX.get().getRotation2d(),
             new SwerveModulePosition[] {
-                m_frontLeftModule.getModulePosition(), 
-                m_frontRightModule.getModulePosition(),
-                m_backLeftModule.getModulePosition(),
-                m_backRightModule.getModulePosition()},
+                frontLeftModule.getModulePosition(),
+                frontRightModule.getModulePosition(),
+                backLeftModule.getModulePosition(),
+                backRightModule.getModulePosition()},
             new Pose2d());
     }
 
     public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity, Translation2d rotationOffset) {
-        SwerveModuleState[] newStates = m_driveKinematics.toSwerveModuleStates(
+        SwerveModuleState[] newStates = kinematics.toSwerveModuleStates(
             new ChassisSpeeds(
                 xMetersPerSecond,
                 yMetersPerSecond,
@@ -111,14 +98,14 @@ public class Drivetrain extends SubsystemBase {
             newStates, 
             MAX_DRIVE_SPEED_MPS);
 
-        m_frontLeftModule.setState(newStates[0]);
-        m_frontRightModule.setState(newStates[1]);
-        m_backLeftModule.setState(newStates[2]);
-        m_backRightModule.setState(newStates[3]);
+        frontLeftModule.setState(newStates[0]);
+        frontRightModule.setState(newStates[1]);
+        backLeftModule.setState(newStates[2]);
+        backRightModule.setState(newStates[3]);
     }
 
     public void setStates(double xMetersPerSecond, double yMetersPerSecond, double angularVelocity) {
-        SwerveModuleState[] newStates = m_driveKinematics.toSwerveModuleStates(
+        SwerveModuleState[] newStates = kinematics.toSwerveModuleStates(
             new ChassisSpeeds(
                 xMetersPerSecond,
                 yMetersPerSecond,
@@ -128,25 +115,23 @@ public class Drivetrain extends SubsystemBase {
             newStates, 
             MAX_DRIVE_SPEED_MPS);
 
-        m_frontLeftModule.setState(newStates[0]);
-        m_frontRightModule.setState(newStates[1]);
-        m_backLeftModule.setState(newStates[2]);
-        m_backRightModule.setState(newStates[3]);
+        frontLeftModule.setState(newStates[0]);
+        frontRightModule.setState(newStates[1]);
+        backLeftModule.setState(newStates[2]);
+        backRightModule.setState(newStates[3]);
     }
 
     @Override
     public void periodic() {
-        m_driveOdometry.update(
+        odometry.update(
             NAVX.get().getRotation2d(), 
             new SwerveModulePosition[] {
-                m_frontLeftModule.getModulePosition(), 
-                m_frontRightModule.getModulePosition(),
-                m_backLeftModule.getModulePosition(),
-                m_backRightModule.getModulePosition()});
+                frontLeftModule.getModulePosition(),
+                frontRightModule.getModulePosition(),
+                backLeftModule.getModulePosition(),
+                backRightModule.getModulePosition()});
     }
 
     public void simulationInit() {}
 
-    @Override
-    public void simulationPeriodic() {}
 }
